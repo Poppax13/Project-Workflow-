@@ -159,7 +159,7 @@ export default function ProjectsPage() {
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-black mb-2">Project Name</label>
+                <label className="block text-sm font-medium mb-2" style={{ color: '#000000' }}>Project Name</label>
                 <input
                   type="text"
                   value={formData.name}
@@ -169,7 +169,7 @@ export default function ProjectsPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-black mb-2">Description</label>
+                <label className="block text-sm font-medium mb-2" style={{ color: '#000000' }}>Description</label>
                 <textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -180,7 +180,7 @@ export default function ProjectsPage() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-black mb-2">Status</label>
+                  <label className="block text-sm font-medium mb-2" style={{ color: '#000000' }}>Status</label>
                   <select
                     value={formData.status}
                     onChange={(e) => setFormData({ ...formData, status: e.target.value as Project['status'] })}
@@ -193,7 +193,7 @@ export default function ProjectsPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-black mb-2">Priority</label>
+                  <label className="block text-sm font-medium mb-2" style={{ color: '#000000' }}>Priority</label>
                   <select
                     value={formData.priority}
                     onChange={(e) => setFormData({ ...formData, priority: e.target.value as Project['priority'] })}
@@ -206,7 +206,7 @@ export default function ProjectsPage() {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-black mb-2">Due Date</label>
+                <label className="block text-sm font-medium mb-2" style={{ color: '#000000' }}>Due Date</label>
                 <input
                   type="date"
                   value={formData.dueDate}

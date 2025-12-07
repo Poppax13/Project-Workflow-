@@ -63,7 +63,7 @@ export default function SignupForm() {
           <h2 className="text-2xl font-bold mb-6 text-gray-900">Sign up</h2>
 
         <label className="block mb-4">
-          <span className="text-sm font-medium text-black mb-2 block">Full name</span>
+          <span className="text-sm font-medium mb-2 block" style={{ color: '#000000' }}>Full name</span>
           <input
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
@@ -74,7 +74,7 @@ export default function SignupForm() {
         </label>
 
         <label className="block mb-4">
-          <span className="text-sm font-medium text-black mb-2 block">Email</span>
+          <span className="text-sm font-medium mb-2 block" style={{ color: '#000000' }}>Email</span>
           <input
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -85,7 +85,7 @@ export default function SignupForm() {
         </label>
 
         <label className="block mb-6">
-          <span className="text-sm font-medium text-black mb-2 block">Password</span>
+          <span className="text-sm font-medium mb-2 block" style={{ color: '#000000' }}>Password</span>
           <input
             value={password}
             onChange={(e) => setPassword(e.target.value)}
