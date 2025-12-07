@@ -1,23 +1,19 @@
 'use client'
 
-import React, { useState } from 'react'
-
-interface Project {
-  id: string
-  name: string
-  description: string
-  status: 'Planning' | 'In Progress' | 'Completed' | 'On Hold'
-  priority: 'Low' | 'Medium' | 'High'
-  dueDate: string
-  createdAt: string
-}
+import React, { useState, useEffect } from 'react'
+import { getProjects, saveProjects, type Project } from '@/lib/dataStore'
 
 export default function ProjectsPage() {
-  const [projects, setProjects] = useState<Project[]>([
-    { id: '1', name: 'Website Redesign', description: 'Complete redesign of company website', status: 'In Progress', priority: 'High', dueDate: '2024-03-15', createdAt: '2024-01-10' },
-    { id: '2', name: 'Mobile App Development', description: 'iOS and Android app development', status: 'Planning', priority: 'High', dueDate: '2024-04-30', createdAt: '2024-02-01' },
-    { id: '3', name: 'API Integration', description: 'Third-party API integration project', status: 'Completed', priority: 'Medium', dueDate: '2024-02-20', createdAt: '2024-01-25' },
-  ])
+  const [projects, setProjects] = useState<Project[]>([])
+
+  useEffect(() => {
+    setProjects(getProjects())
+  }, [])
+
+  const updateProjects = (newProjects: Project[]) => {
+    setProjects(newProjects)
+    saveProjects(newProjects)
+  }
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingProject, setEditingProject] = useState<Project | null>(null)
   const [formData, setFormData] = useState<Omit<Project, 'id' | 'createdAt'>>({
@@ -59,24 +55,25 @@ export default function ProjectsPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (editingProject) {
-      setProjects(projects.map(p => p.id === editingProject.id 
+      const updated = projects.map(p => p.id === editingProject.id 
         ? { ...p, ...formData, createdAt: p.createdAt }
         : p
-      ))
+      )
+      updateProjects(updated)
     } else {
       const newProject: Project = {
         id: Date.now().toString(),
         ...formData,
         createdAt: new Date().toISOString().split('T')[0]
       }
-      setProjects([...projects, newProject])
+      updateProjects([...projects, newProject])
     }
     closeModal()
   }
 
   const handleDelete = (id: string) => {
     if (confirm('Are you sure you want to delete this project?')) {
-      setProjects(projects.filter(p => p.id !== id))
+      updateProjects(projects.filter(p => p.id !== id))
     }
   }
 

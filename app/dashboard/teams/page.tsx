@@ -1,21 +1,19 @@
 'use client'
 
-import React, { useState } from 'react'
-
-interface Team {
-  id: string
-  name: string
-  description: string
-  members: number
-  createdAt: string
-}
+import React, { useState, useEffect } from 'react'
+import { getTeams, saveTeams, type Team } from '@/lib/dataStore'
 
 export default function TeamsPage() {
-  const [teams, setTeams] = useState<Team[]>([
-    { id: '1', name: 'Development Team', description: 'Frontend and backend developers', members: 8, createdAt: '2024-01-15' },
-    { id: '2', name: 'Design Team', description: 'UI/UX designers and creative professionals', members: 5, createdAt: '2024-01-20' },
-    { id: '3', name: 'Marketing Team', description: 'Marketing and communications specialists', members: 6, createdAt: '2024-02-01' },
-  ])
+  const [teams, setTeams] = useState<Team[]>([])
+
+  useEffect(() => {
+    setTeams(getTeams())
+  }, [])
+
+  const updateTeams = (newTeams: Team[]) => {
+    setTeams(newTeams)
+    saveTeams(newTeams)
+  }
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingTeam, setEditingTeam] = useState<Team | null>(null)
   const [formData, setFormData] = useState({ name: '', description: '', members: 0 })
@@ -40,24 +38,25 @@ export default function TeamsPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (editingTeam) {
-      setTeams(teams.map(t => t.id === editingTeam.id 
+      const updated = teams.map(t => t.id === editingTeam.id 
         ? { ...t, ...formData, createdAt: t.createdAt }
         : t
-      ))
+      )
+      updateTeams(updated)
     } else {
       const newTeam: Team = {
         id: Date.now().toString(),
         ...formData,
         createdAt: new Date().toISOString().split('T')[0]
       }
-      setTeams([...teams, newTeam])
+      updateTeams([...teams, newTeam])
     }
     closeModal()
   }
 
   const handleDelete = (id: string) => {
     if (confirm('Are you sure you want to delete this team?')) {
-      setTeams(teams.filter(t => t.id !== id))
+      updateTeams(teams.filter(t => t.id !== id))
     }
   }
 

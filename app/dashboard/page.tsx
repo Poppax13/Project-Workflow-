@@ -1,27 +1,78 @@
 'use client'
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { getProjects, getTasks, getTeams, type Project, type Task } from '@/lib/dataStore'
 
 export default function DashboardPage() {
+  const [projects, setProjects] = useState<Project[]>([])
+  const [tasks, setTasks] = useState<Task[]>([])
+  const [teams, setTeams] = useState(getTeams())
+
+  useEffect(() => {
+    const loadData = () => {
+      setProjects(getProjects())
+      setTasks(getTasks())
+      setTeams(getTeams())
+    }
+    
+    loadData()
+    
+    // Listen for custom data store update events
+    const handleDataUpdate = () => {
+      loadData()
+    }
+    
+    window.addEventListener('dataStoreUpdated', handleDataUpdate)
+    window.addEventListener('storage', handleDataUpdate)
+    
+    return () => {
+      window.removeEventListener('dataStoreUpdated', handleDataUpdate)
+      window.removeEventListener('storage', handleDataUpdate)
+    }
+  }, [])
+
+  // Calculate stats from actual data
+  const activeProjects = projects.filter(p => p.status === 'In Progress' || p.status === 'Planning').length
+  const completedTasks = tasks.filter(t => t.status === 'Done').length
+  const totalTeamMembers = teams.reduce((sum, team) => sum + team.members, 0)
+  const pendingTasks = tasks.filter(t => t.status === 'Todo' || t.status === 'In Progress').length
+
   const stats = [
-    { label: 'Active Projects', value: '12', color: '#2b7fff', icon: '📊' },
-    { label: 'Tasks Completed', value: '48', color: '#10b981', icon: '✅' },
-    { label: 'Team Members', value: '24', color: '#f59e0b', icon: '👥' },
-    { label: 'Pending Tasks', value: '8', color: '#ef4444', icon: '⏳' },
+    { label: 'Active Projects', value: activeProjects.toString(), color: '#2b7fff', icon: '📊' },
+    { label: 'Tasks Completed', value: completedTasks.toString(), color: '#10b981', icon: '✅' },
+    { label: 'Team Members', value: totalTeamMembers.toString(), color: '#f59e0b', icon: '👥' },
+    { label: 'Pending Tasks', value: pendingTasks.toString(), color: '#ef4444', icon: '⏳' },
   ]
 
-  const recentProjects = [
-    { name: 'Website Redesign', status: 'In Progress', progress: 65 },
-    { name: 'Mobile App', status: 'Planning', progress: 20 },
-    { name: 'API Integration', status: 'Completed', progress: 100 },
-  ]
+  // Get recent projects (last 3, sorted by creation date)
+  const recentProjects = [...projects]
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .slice(0, 3)
+    .map(project => {
+      // Calculate progress based on status
+      let progress = 0
+      if (project.status === 'Completed') progress = 100
+      else if (project.status === 'In Progress') progress = 50
+      else if (project.status === 'Planning') progress = 25
+      else if (project.status === 'On Hold') progress = 0
+      
+      return {
+        name: project.name,
+        status: project.status,
+        progress
+      }
+    })
 
-  const recentTasks = [
-    { title: 'Design login page', status: 'In Progress', priority: 'High' },
-    { title: 'Setup database', status: 'Done', priority: 'High' },
-    { title: 'Write documentation', status: 'Todo', priority: 'Medium' },
-  ]
+  // Get recent tasks (last 3, sorted by creation date)
+  const recentTasks = [...tasks]
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .slice(0, 3)
+    .map(task => ({
+      title: task.title,
+      status: task.status === 'Done' ? 'Done' : task.status === 'In Progress' ? 'In Progress' : 'Todo',
+      priority: task.priority
+    }))
 
   return (
     <div className="space-y-6">
@@ -67,35 +118,40 @@ export default function DashboardPage() {
             </Link>
           </div>
           <div className="space-y-4">
-            {recentProjects.map((project, index) => (
-              <div key={index} className="border-b border-gray-100 last:border-0 pb-4 last:pb-0">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="font-semibold text-gray-900">{project.name}</h3>
-                  <span className={`px-2 py-1 rounded text-xs font-medium ${
-                    project.status === 'Completed' ? 'bg-green-100 text-green-700' :
-                    project.status === 'In Progress' ? 'bg-blue-100 text-blue-700' :
-                    'bg-yellow-100 text-yellow-700'
-                  }`}>
-                    {project.status}
-                  </span>
-                </div>
-                <div className="mt-2">
-                  <div className="flex items-center justify-between text-sm text-gray-600 mb-1">
-                    <span>Progress</span>
-                    <span>{project.progress}%</span>
+            {recentProjects.length > 0 ? (
+              recentProjects.map((project, index) => (
+                <div key={index} className="border-b border-gray-100 last:border-0 pb-4 last:pb-0">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="font-semibold text-gray-900">{project.name}</h3>
+                    <span className={`px-2 py-1 rounded text-xs font-medium ${
+                      project.status === 'Completed' ? 'bg-green-100 text-green-700' :
+                      project.status === 'In Progress' ? 'bg-blue-100 text-blue-700' :
+                      project.status === 'Planning' ? 'bg-yellow-100 text-yellow-700' :
+                      'bg-gray-100 text-gray-700'
+                    }`}>
+                      {project.status}
+                    </span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div 
-                      className="h-2 rounded-full transition-all"
-                      style={{ 
-                        width: `${project.progress}%`,
-                        backgroundColor: '#2b7fff'
-                      }}
-                    />
+                  <div className="mt-2">
+                    <div className="flex items-center justify-between text-sm text-gray-600 mb-1">
+                      <span>Progress</span>
+                      <span>{project.progress}%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div 
+                        className="h-2 rounded-full transition-all"
+                        style={{ 
+                          width: `${project.progress}%`,
+                          backgroundColor: '#2b7fff'
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <div className="text-center py-4 text-gray-500">No projects yet</div>
+            )}
           </div>
         </div>
 
@@ -112,29 +168,33 @@ export default function DashboardPage() {
             </Link>
           </div>
           <div className="space-y-4">
-            {recentTasks.map((task, index) => (
-              <div key={index} className="flex items-center justify-between border-b border-gray-100 last:border-0 pb-4 last:pb-0">
-                <div className="flex-1">
-                  <h3 className="font-semibold text-gray-900 mb-1">{task.title}</h3>
-                  <div className="flex gap-2">
-                    <span className={`px-2 py-1 rounded text-xs font-medium ${
-                      task.status === 'Done' ? 'bg-green-100 text-green-700' :
-                      task.status === 'In Progress' ? 'bg-blue-100 text-blue-700' :
-                      'bg-gray-100 text-gray-700'
-                    }`}>
-                      {task.status}
-                    </span>
-                    <span className={`px-2 py-1 rounded text-xs font-medium ${
-                      task.priority === 'High' ? 'bg-red-100 text-red-700' :
-                      task.priority === 'Medium' ? 'bg-orange-100 text-orange-700' :
-                      'bg-green-100 text-green-700'
-                    }`}>
-                      {task.priority}
-                    </span>
+            {recentTasks.length > 0 ? (
+              recentTasks.map((task, index) => (
+                <div key={index} className="flex items-center justify-between border-b border-gray-100 last:border-0 pb-4 last:pb-0">
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-gray-900 mb-1">{task.title}</h3>
+                    <div className="flex gap-2">
+                      <span className={`px-2 py-1 rounded text-xs font-medium ${
+                        task.status === 'Done' ? 'bg-green-100 text-green-700' :
+                        task.status === 'In Progress' ? 'bg-blue-100 text-blue-700' :
+                        'bg-gray-100 text-gray-700'
+                      }`}>
+                        {task.status}
+                      </span>
+                      <span className={`px-2 py-1 rounded text-xs font-medium ${
+                        task.priority === 'High' ? 'bg-red-100 text-red-700' :
+                        task.priority === 'Medium' ? 'bg-orange-100 text-orange-700' :
+                        'bg-green-100 text-green-700'
+                      }`}>
+                        {task.priority}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <div className="text-center py-4 text-gray-500">No tasks yet</div>
+            )}
           </div>
         </div>
       </div>

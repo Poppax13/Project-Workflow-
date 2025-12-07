@@ -1,25 +1,19 @@
 'use client'
 
-import React, { useState } from 'react'
-
-interface Task {
-  id: string
-  title: string
-  description: string
-  status: 'Todo' | 'In Progress' | 'Done'
-  priority: 'Low' | 'Medium' | 'High'
-  assignee: string
-  dueDate: string
-  createdAt: string
-}
+import React, { useState, useEffect } from 'react'
+import { getTasks, saveTasks, type Task } from '@/lib/dataStore'
 
 export default function TasksPage() {
-  const [tasks, setTasks] = useState<Task[]>([
-    { id: '1', title: 'Design login page', description: 'Create modern and user-friendly login interface', status: 'In Progress', priority: 'High', assignee: 'John Doe', dueDate: '2024-03-10', createdAt: '2024-02-15' },
-    { id: '2', title: 'Setup database', description: 'Configure database schema and connections', status: 'Done', priority: 'High', assignee: 'Jane Smith', dueDate: '2024-02-28', createdAt: '2024-02-01' },
-    { id: '3', title: 'Write documentation', description: 'Document API endpoints and usage', status: 'Todo', priority: 'Medium', assignee: 'Mike Johnson', dueDate: '2024-03-20', createdAt: '2024-02-20' },
-    { id: '4', title: 'Code review', description: 'Review pull requests from team members', status: 'In Progress', priority: 'Medium', assignee: 'Sarah Wilson', dueDate: '2024-03-05', createdAt: '2024-02-25' },
-  ])
+  const [tasks, setTasks] = useState<Task[]>([])
+
+  useEffect(() => {
+    setTasks(getTasks())
+  }, [])
+
+  const updateTasks = (newTasks: Task[]) => {
+    setTasks(newTasks)
+    saveTasks(newTasks)
+  }
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingTask, setEditingTask] = useState<Task | null>(null)
   const [filterStatus, setFilterStatus] = useState<string>('All')
@@ -65,24 +59,25 @@ export default function TasksPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (editingTask) {
-      setTasks(tasks.map(t => t.id === editingTask.id 
+      const updated = tasks.map(t => t.id === editingTask.id 
         ? { ...t, ...formData, createdAt: t.createdAt }
         : t
-      ))
+      )
+      updateTasks(updated)
     } else {
       const newTask: Task = {
         id: Date.now().toString(),
         ...formData,
         createdAt: new Date().toISOString().split('T')[0]
       }
-      setTasks([...tasks, newTask])
+      updateTasks([...tasks, newTask])
     }
     closeModal()
   }
 
   const handleDelete = (id: string) => {
     if (confirm('Are you sure you want to delete this task?')) {
-      setTasks(tasks.filter(t => t.id !== id))
+      updateTasks(tasks.filter(t => t.id !== id))
     }
   }
 
