@@ -53,7 +53,7 @@ export default function LoginForm() {
           <h2 className="text-2xl font-bold mb-6 text-gray-900">Log in</h2>
 
         <label className="block mb-4">
-          <span className="text-sm font-medium text-gray-700 mb-2 block">Email</span>
+          <span className="text-sm font-medium text-black mb-2 block">Email</span>
           <input
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -64,7 +64,7 @@ export default function LoginForm() {
         </label>
 
         <label className="block mb-6">
-          <span className="text-sm font-medium text-gray-700 mb-2 block">Password</span>
+          <span className="text-sm font-medium text-black mb-2 block">Password</span>
           <input
             value={password}
             onChange={(e) => setPassword(e.target.value)}

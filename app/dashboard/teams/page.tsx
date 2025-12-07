@@ -115,7 +115,7 @@ export default function TeamsPage() {
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Team Name</label>
+                <label className="block text-sm font-medium text-black mb-2">Team Name</label>
                 <input
                   type="text"
                   value={formData.name}
@@ -125,7 +125,7 @@ export default function TeamsPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                <label className="block text-sm font-medium text-black mb-2">Description</label>
                 <textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -135,7 +135,7 @@ export default function TeamsPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Members</label>
+                <label className="block text-sm font-medium text-black mb-2">Members</label>
                 <input
                   type="number"
                   value={formData.members}

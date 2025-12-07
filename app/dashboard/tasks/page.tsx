@@ -189,7 +189,7 @@ export default function TasksPage() {
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Task Title</label>
+                <label className="block text-sm font-medium text-black mb-2">Task Title</label>
                 <input
                   type="text"
                   value={formData.title}
@@ -199,7 +199,7 @@ export default function TasksPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                <label className="block text-sm font-medium text-black mb-2">Description</label>
                 <textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -210,7 +210,7 @@ export default function TasksPage() {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                  <label className="block text-sm font-medium text-black mb-2">Status</label>
                   <select
                     value={formData.status}
                     onChange={(e) => setFormData({ ...formData, status: e.target.value as Task['status'] })}
@@ -222,7 +222,7 @@ export default function TasksPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Priority</label>
+                  <label className="block text-sm font-medium text-black mb-2">Priority</label>
                   <select
                     value={formData.priority}
                     onChange={(e) => setFormData({ ...formData, priority: e.target.value as Task['priority'] })}
@@ -235,7 +235,7 @@ export default function TasksPage() {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Assignee</label>
+                <label className="block text-sm font-medium text-black mb-2">Assignee</label>
                 <input
                   type="text"
                   value={formData.assignee}
@@ -245,7 +245,7 @@ export default function TasksPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Due Date</label>
+                <label className="block text-sm font-medium text-black mb-2">Due Date</label>
                 <input
                   type="date"
                   value={formData.dueDate}
