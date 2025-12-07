@@ -121,6 +121,7 @@ export default function TeamsPage() {
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-[#2b7fff] focus:ring-2 focus:ring-[#2b7fff]/20 outline-none transition-all"
+                  style={{ color: '#000000' }}
                   required
                 />
               </div>
@@ -130,6 +131,7 @@ export default function TeamsPage() {
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-[#2b7fff] focus:ring-2 focus:ring-[#2b7fff]/20 outline-none transition-all resize-none"
+                  style={{ color: '#000000' }}
                   rows={3}
                   required
                 />
@@ -141,6 +143,7 @@ export default function TeamsPage() {
                   value={formData.members}
                   onChange={(e) => setFormData({ ...formData, members: parseInt(e.target.value) || 0 })}
                   className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-[#2b7fff] focus:ring-2 focus:ring-[#2b7fff]/20 outline-none transition-all"
+                  style={{ color: '#000000' }}
                   min="0"
                   required
                 />

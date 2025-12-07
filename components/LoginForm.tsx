@@ -59,6 +59,7 @@ export default function LoginForm() {
             onChange={(e) => setEmail(e.target.value)}
             className="mt-1 block w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-[#2b7fff] focus:ring-2 focus:ring-[#2b7fff]/20 outline-none transition-all"
             type="email"
+            style={{ color: '#000000' }}
             required
           />
         </label>
@@ -70,6 +71,7 @@ export default function LoginForm() {
             onChange={(e) => setPassword(e.target.value)}
             className="mt-1 block w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-[#2b7fff] focus:ring-2 focus:ring-[#2b7fff]/20 outline-none transition-all"
             type="password"
+            style={{ color: '#000000' }}
             required
           />
         </label>

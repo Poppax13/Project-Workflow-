@@ -195,6 +195,7 @@ export default function TasksPage() {
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-[#2b7fff] focus:ring-2 focus:ring-[#2b7fff]/20 outline-none transition-all"
+                  style={{ color: '#000000' }}
                   required
                 />
               </div>
@@ -204,6 +205,7 @@ export default function TasksPage() {
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-[#2b7fff] focus:ring-2 focus:ring-[#2b7fff]/20 outline-none transition-all resize-none"
+                  style={{ color: '#000000' }}
                   rows={3}
                   required
                 />
@@ -215,6 +217,7 @@ export default function TasksPage() {
                     value={formData.status}
                     onChange={(e) => setFormData({ ...formData, status: e.target.value as Task['status'] })}
                     className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-[#2b7fff] focus:ring-2 focus:ring-[#2b7fff]/20 outline-none transition-all"
+                    style={{ color: '#000000' }}
                   >
                     <option value="Todo">Todo</option>
                     <option value="In Progress">In Progress</option>
@@ -227,6 +230,7 @@ export default function TasksPage() {
                     value={formData.priority}
                     onChange={(e) => setFormData({ ...formData, priority: e.target.value as Task['priority'] })}
                     className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-[#2b7fff] focus:ring-2 focus:ring-[#2b7fff]/20 outline-none transition-all"
+                    style={{ color: '#000000' }}
                   >
                     <option value="Low">Low</option>
                     <option value="Medium">Medium</option>
@@ -241,6 +245,7 @@ export default function TasksPage() {
                   value={formData.assignee}
                   onChange={(e) => setFormData({ ...formData, assignee: e.target.value })}
                   className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-[#2b7fff] focus:ring-2 focus:ring-[#2b7fff]/20 outline-none transition-all"
+                  style={{ color: '#000000' }}
                   required
                 />
               </div>
@@ -251,6 +256,7 @@ export default function TasksPage() {
                   value={formData.dueDate}
                   onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
                   className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-[#2b7fff] focus:ring-2 focus:ring-[#2b7fff]/20 outline-none transition-all"
+                  style={{ color: '#000000' }}
                   required
                 />
               </div>

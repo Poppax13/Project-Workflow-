@@ -44,6 +44,21 @@ div label span,
   color: #000000 !important;
 }
 
+/* Force all input text to be black */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="number"],
+textarea,
+select,
+input,
+input *,
+textarea *,
+select * {
+  color: #000000 !important;
+}
+
 /* Override dark mode for labels */
 @media (prefers-color-scheme: dark) {
   label,
@@ -61,6 +76,21 @@ div label span,
   [class*="bg-white"] label,
   [class*="bg-white"] label *,
   [class*="bg-white"] label span {
+    color: #000000 !important;
+  }
+  
+  /* Force all input text to be black in dark mode */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="date"],
+  input[type="number"],
+  textarea,
+  select,
+  input,
+  input *,
+  textarea *,
+  select * {
     color: #000000 !important;
   }
 }
