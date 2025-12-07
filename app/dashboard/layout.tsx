@@ -149,7 +149,7 @@ export default function DashboardLayout({
         {/* Sidebar */}
         <aside className="w-64 bg-white/80 backdrop-blur-lg border-r border-gray-200/50 min-h-[calc(100vh-81px)] sticky top-[81px] shadow-sm">
           <nav className="p-4">
-            <ul className="space-y-2">
+            <ul className="space-y-2 mt-4">
               {navItems.map((item) => {
                 const isActive = pathname === item.href
                 return (
