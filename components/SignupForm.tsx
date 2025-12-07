@@ -47,9 +47,20 @@ export default function SignupForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <form onSubmit={handleSubmit} className="max-w-md w-full bg-white p-8 rounded-xl shadow-lg">
-        <h2 className="text-3xl font-bold mb-6 text-gray-900">Sign up</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-blue-50 to-gray-100 px-4">
+      <div className="max-w-md w-full">
+        <div className="text-center mb-8">
+          <div 
+            className="w-16 h-16 rounded-2xl flex items-center justify-center text-white font-bold text-2xl mx-auto mb-4 shadow-lg"
+            style={{ backgroundColor: '#2b7fff' }}
+          >
+            M
+          </div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Get started</h1>
+          <p className="text-gray-600">Create your account to get started</p>
+        </div>
+        <form onSubmit={handleSubmit} className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
+          <h2 className="text-2xl font-bold mb-6 text-gray-900">Sign up</h2>
 
         <label className="block mb-4">
           <span className="text-sm font-medium text-gray-700 mb-2 block">Full name</span>
@@ -105,7 +116,8 @@ export default function SignupForm() {
             Log in
           </Link>
         </p>
-      </form>
+        </form>
+      </div>
     </div>
   )
 }

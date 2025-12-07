@@ -59,14 +59,22 @@ export default function DashboardLayout({
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50 -mx-6 -mt-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 -mx-6 -mt-6">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 shadow-sm">
+      <header className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-40">
         <div className="px-6 py-4 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-gray-900">My App</h1>
+          <div className="flex items-center gap-3">
+            <div 
+              className="w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold text-lg"
+              style={{ backgroundColor: '#2b7fff' }}
+            >
+              M
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900">My App</h1>
+          </div>
           <button
             onClick={handleLogout}
-            className="px-4 py-2 text-sm font-medium text-white rounded-md transition-all hover:opacity-90"
+            className="px-5 py-2.5 text-sm font-semibold text-white rounded-lg transition-all hover:opacity-90 shadow-md hover:shadow-lg"
             style={{ backgroundColor: '#2b7fff' }}
           >
             Logout
@@ -76,21 +84,21 @@ export default function DashboardLayout({
 
       <div className="flex">
         {/* Sidebar */}
-        <aside className="w-64 bg-white border-r border-gray-200 min-h-[calc(100vh-73px)]">
+        <aside className="w-64 bg-white border-r border-gray-200 min-h-[calc(100vh-73px)] sticky top-[73px]">
           <nav className="p-4">
-            <ul className="space-y-2">
+            <ul className="space-y-1">
               {navItems.map((item) => {
                 const isActive = pathname === item.href
                 return (
                   <li key={item.href}>
                     <Link
                       href={item.href}
-                      className={`block px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                      className={`block px-4 py-3 rounded-lg text-sm font-medium transition-all ${
                         isActive
-                          ? 'text-white border-l-4'
+                          ? 'text-white shadow-md'
                           : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
                       }`}
-                      style={isActive ? { backgroundColor: '#2b7fff', borderLeftColor: '#1a5fcc' } : {}}
+                      style={isActive ? { backgroundColor: '#2b7fff' } : {}}
                     >
                       {item.name}
                     </Link>
@@ -102,7 +110,7 @@ export default function DashboardLayout({
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 p-6">
+        <main className="flex-1 p-8">
           {children}
         </main>
       </div>
