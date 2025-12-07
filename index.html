@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ProjectFlow — Professional Project Management</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Auth Screen -->
+  <div id="authScreen">
+    <div class="auth-container">
+      <div class="auth-logo"><i class="fa-solid fa-rocket"></i><h1>ProjectFlow</h1></div>
+      
+      <!-- Login Form -->
+      <form id="loginForm" class="auth-form active" onsubmit="event.preventDefault(); document.getElementById('authScreen').style.display = 'none';">
+        <h2>Welcome Back</h2>
+        <div class="auth-input-group">
+          <label>Email</label>
+          <input id="loginEmail" type="email" required placeholder="your@email.com">
+        </div>
+        <div class="auth-input-group">
+          <label>Password</label>
+          <input id="loginPassword" type="password" required placeholder="••••••••">
+        </div>
+        <button type="submit" class="auth-btn">Sign In</button>
+        <div class="auth-toggle">Don't have an account? <button type="button" onclick="switchAuthForm()">Sign up</button></div>
+      </form>
+      
+      <!-- Signup Form -->
+      <form id="signupForm" class="auth-form" onsubmit="event.preventDefault(); document.getElementById('authScreen').style.display = 'none';">
+        <h2>Create Account</h2>
+        <div class="auth-input-group">
+          <label>Full Name</label>
+          <input id="signupName" type="text" required placeholder="John Doe">
+        </div>
+        <div class="auth-input-group">
+          <label>Email</label>
+          <input id="signupEmail" type="email" required placeholder="your@email.com">
+        </div>
+        <div class="auth-input-group">
+          <label>Password</label>
+          <input id="signupPassword" type="password" required placeholder="••••••••">
+        </div>
+        <div class="auth-input-group">
+          <label>Confirm Password</label>
+          <input id="signupConfirm" type="password" required placeholder="••••••••">
+        </div>
+        <button type="submit" class="auth-btn">Create Account</button>
+        <div class="auth-toggle">Already have an account? <button type="button" onclick="switchAuthForm()">Sign in</button></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Main App -->
+  <div class="sidebar" aria-label="Main sidebar">
+    <div class="sidebar-header"><div class="logo"><i class="fa-solid fa-rocket"></i> ProjectFlow</div></div>
+    <nav class="sidebar-nav" role="navigation" aria-label="Primary">
+      <button class="nav-item active" data-tab="dashboard" onclick="switchTab(event)" type="button"><i class="fa-solid fa-chart-line"></i><span>Dashboard</span></button>
+      <button class="nav-item" data-tab="projects" onclick="switchTab(event)" type="button"><i class="fa-solid fa-folder"></i><span>Projects</span></button>
+      <button class="nav-item" data-tab="tasks" onclick="switchTab(event)" type="button"><i class="fa-solid fa-list-check"></i><span>Tasks</span></button>
+      <button class="nav-item" data-tab="team" onclick="switchTab(event)" type="button"><i class="fa-solid fa-users"></i><span>Team</span></button>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="btn btn-ghost" onclick="openExport()" type="button"><i class="fa-solid fa-file-export"></i> Export</button>
+      <button class="btn btn-ghost" onclick="openImport()" type="button"><i class="fa-solid fa-file-import"></i> Import</button>
+      <button class="logout-btn" onclick="logout()" type="button"><i class="fa-solid fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </div>
+
+  <main class="main">
+    <header class="header">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input id="globalSearch" placeholder="Search projects, tasks..." oninput="globalSearch()">
+      </div>
+      <div class="header-right">
+        <div class="user-profile" role="region" aria-label="User profile">
+          <div id="userDisplayName" style="font-size:14px;font-weight:600"></div>
+          <div id="userDisplayInitials" class="user-avatar"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Dashboard -->
+    <section id="dashboard" class="page" role="main">
+      <div class="page-header">
+        <h1 class="page-title">Dashboard</h1>
+        <div style="display:flex;gap:14px">
+          <button class="btn btn-primary" onclick="openProjectModal()"><i class="fa-solid fa-plus"></i> New Project</button>
+          <button class="btn btn-primary" onclick="openTaskModal()"><i class="fa-solid fa-plus"></i> New Task</button>
+        </div>
+      </div>
+
+      <div class="stats-grid" id="statsGrid"></div>
+
+      <div class="section">
+        <div class="section-header"><h2>Active Projects</h2></div>
+        <div class="projects-grid" id="dashboardProjects"></div>
+      </div>
+
+      <div class="section">
+        <div class="section-header"><h2>Recent Tasks</h2></div>
+        <div class="task-list" id="dashboardTasks"></div>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects" class="page" style="display:none">
+      <div class="page-header">
+        <h1 class="page-title">Projects</h1>
+        <button class="btn btn-primary" onclick="openProjectModal()"><i class="fa-solid fa-plus"></i> New Project</button>
+      </div>
+
+      <div style="display:flex;gap:12px;margin-bottom:20px">
+        <div style="flex:1">
+          <input id="projectSearch" placeholder="Search projects..." oninput="filterProjects()" style="width:100%;padding:12px 14px;border:2px solid var(--border);border-radius:10px;font-size:14px;background:var(--bg)">
+        </div>
+        <select id="projectFilter" onchange="filterProjects()" style="padding:12px 14px;border:2px solid var(--border);border-radius:10px;font-size:14px;background:var(--bg)">
+          <option value="all">All statuses</option>
+          <option value="planning">Planning</option>
+          <option value="in-progress">In Progress</option>
+          <option value="review">Review</option>
+          <option value="completed">Completed</option>
+        </select>
+      </div>
+
+      <div class="projects-grid" id="projectsGrid"></div>
+    </section>
+
+    <!-- Tasks -->
+    <section id="tasks" class="page" style="display:none">
+      <div class="page-header">
+        <h1 class="page-title">Tasks</h1>
+        <button class="btn btn-primary" onclick="openTaskModal()"><i class="fa-solid fa-plus"></i> New Task</button>
+      </div>
+
+      <div class="section"><div class="task-list" id="tasksGrid"></div></div>
+    </section>
+
+    <!-- Team -->
+    <section id="team" class="page" style="display:none">
+      <div class="page-header">
+        <h1 class="page-title">Team Members</h1>
+        <button class="btn btn-primary" onclick="openTeamModal()"><i class="fa-solid fa-plus"></i> Invite Member</button>
+      </div>
+
+      <div class="team-grid" id="teamGrid"></div>
+    </section>
+  </main>
+
+  <!-- Modals -->
+  <div id="projectModal" class="modal" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="projectModalTitle">New Project</h2>
+        <button onclick="closeProjectModal()" class="btn btn-ghost" type="button"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="projectForm" onsubmit="saveProject(event)">
+        <input type="hidden" id="projectId">
+        <div class="form-group"><label>Project Name *</label><input id="projectName" required></div>
+        <div class="form-group"><label>Description</label><textarea id="projectDescription" style="resize:vertical;min-height:100px"></textarea></div>
+        <div class="form-group"><label>Status</label><select id="projectStatus"><option value="planning">Planning</option><option value="in-progress">In Progress</option><option value="review">Review</option><option value="completed">Completed</option></select></div>
+        <div class="form-group"><label>Due Date *</label><input type="date" id="projectDueDate" required></div>
+        <div class="form-group"><label>Color</label><div id="projectColorPicker" style="display:flex;gap:12px;flex-wrap:wrap"></div></div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeProjectModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Project</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="taskModal" class="modal" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="taskModalTitle">New Task</h2>
+        <button onclick="closeTaskModal()" class="btn btn-ghost" type="button"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="taskForm" onsubmit="saveTask(event)">
+        <input type="hidden" id="taskId">
+        <div class="form-group"><label>Title *</label><input id="taskTitle" required></div>
+        <div class="form-group"><label>Description</label><textarea id="taskDescription" style="resize:vertical;min-height:100px"></textarea></div>
+        <div class="form-group"><label>Project</label><select id="taskProject"><option value="">(none)</option></select></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div class="form-group"><label>Priority</label><select id="taskPriority"><option value="low">Low</option><option value="medium">Medium</option><option value="high">High</option></select></div>
+          <div class="form-group"><label>Status</label><select id="taskStatus"><option value="todo">To Do</option><option value="in-progress">In Progress</option><option value="review">Review</option><option value="completed">Completed</option></select></div>
+        </div>
+        <div class="form-group"><label>Assignee</label><select id="taskAssignee"><option value="">Unassigned</option></select></div>
+        <div class="form-group"><label>Due Date *</label><input type="date" id="taskDueDate" required></div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeTaskModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="teamModal" class="modal" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="teamModalTitle">Invite Member</h2>
+        <button onclick="closeTeamModal()" class="btn btn-ghost" type="button"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="teamForm" onsubmit="saveMember(event)">
+        <input type="hidden" id="memberId">
+        <div class="form-group"><label>Name *</label><input id="memberName" required></div>
+        <div class="form-group"><label>Email *</label><input id="memberEmail" type="email" required></div>
+        <div class="form-group"><label>Role *</label><input id="memberRole" required></div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeTeamModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Member</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="exportModal" class="modal"><div class="modal-content"><div class="modal-header"><h2>Export Data</h2><button onclick="closeExport()" class="btn btn-ghost" type="button"><i class="fa-solid fa-xmark"></i></button></div><p style="font-size:14px;color:var(--text-secondary)">Download a JSON backup of all your projects and tasks.</p><div class="form-actions"><button class="btn btn-primary" onclick="exportData()"><i class="fa-solid fa-download"></i> Download</button><button class="btn btn-ghost" onclick="closeExport()">Cancel</button></div></div></div>
+  <div id="importModal" class="modal"><div class="modal-content"><div class="modal-header"><h2>Import Data</h2><button onclick="closeImport()" class="btn btn-ghost" type="button"><i class="fa-solid fa-xmark"></i></button></div><p style="font-size:14px;color:var(--text-secondary)">Upload a previously exported JSON file.</p><input type="file" id="importFile" accept="application/json" style="margin:16px 0;padding:12px;border:2px dashed var(--border);border-radius:10px;width:100%"><div class="form-actions"><button class="btn btn-primary" onclick="importData()"><i class="fa-solid fa-upload"></i> Import</button><button class="btn btn-ghost" onclick="closeImport()">Cancel</button></div></div></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

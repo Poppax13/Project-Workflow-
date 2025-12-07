@@ -4,6 +4,7 @@
 import React, { useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 export default function LoginForm() {
   const router = useRouter()
@@ -36,40 +37,54 @@ export default function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-black p-6 rounded-xl shadow">
-      <h2 className="text-2xl font-semibold mb-4">Log in</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <form onSubmit={handleSubmit} className="max-w-md w-full bg-white p-8 rounded-xl shadow-lg">
+        <h2 className="text-3xl font-bold mb-6 text-gray-900">Log in</h2>
 
-      <label className="block mb-2">
-        <span className="text-sm">Email</span>
-        <input
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="mt-1 block w-full rounded-md border-gray-200 shadow-sm"
-          type="email"
-          required
-        />
-      </label>
+        <label className="block mb-4">
+          <span className="text-sm font-medium text-gray-700 mb-2 block">Email</span>
+          <input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="mt-1 block w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-[#2b7fff] focus:ring-2 focus:ring-[#2b7fff]/20 outline-none transition-all"
+            type="email"
+            required
+          />
+        </label>
 
-      <label className="block mb-4">
-        <span className="text-sm">Password</span>
-        <input
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="mt-1 block w-full rounded-md border-gray-200 shadow-sm"
-          type="password"
-          required
-        />
-      </label>
+        <label className="block mb-6">
+          <span className="text-sm font-medium text-gray-700 mb-2 block">Password</span>
+          <input
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="mt-1 block w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-[#2b7fff] focus:ring-2 focus:ring-[#2b7fff]/20 outline-none transition-all"
+            type="password"
+            required
+          />
+        </label>
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full py-2 rounded-lg bg-green-600 text-white font-medium disabled:opacity-60"
-      >
-        {loading ? 'Logging in...' : 'Log in'}
-      </button>
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full py-3 rounded-lg text-white font-semibold disabled:opacity-60 transition-all hover:opacity-90"
+          style={{ backgroundColor: '#2b7fff' }}
+        >
+          {loading ? 'Logging in...' : 'Log in'}
+        </button>
 
-      {message && <p className="mt-3 text-sm text-gray-700">{message}</p>}
-    </form>
+        {message && (
+          <p className={`mt-4 text-sm ${message.includes('Error') || message.includes('error') ? 'text-red-600' : 'text-green-600'}`}>
+            {message}
+          </p>
+        )}
+        
+        <p className="mt-6 text-center text-sm text-gray-600">
+          Don't have an account?{' '}
+          <Link href="/sign-up" className="font-semibold hover:underline" style={{ color: '#2b7fff' }}>
+            Sign up
+          </Link>
+        </p>
+      </form>
+    </div>
   )
 }
