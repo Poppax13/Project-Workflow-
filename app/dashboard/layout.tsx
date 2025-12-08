@@ -122,15 +122,17 @@ export default function DashboardLayout({
                   <p className="text-sm font-semibold text-gray-900 capitalize">{userName}</p>
                   <p className="text-xs text-gray-500 truncate max-w-[150px]">{userEmail}</p>
                 </div>
-                <div 
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold shadow-md cursor-pointer hover:shadow-lg transition-all hover:scale-105"
+                <Link
+                  href="/dashboard/profile"
+                  aria-label="Go to profile"
+                  className="w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold shadow-md cursor-pointer hover:shadow-lg transition-all hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2b7fff]"
                   style={{ 
                     backgroundColor: '#2b7fff',
                     background: 'linear-gradient(135deg, #2b7fff 0%, #1a5fcc 100%)'
                   }}
                 >
                   {userName.charAt(0).toUpperCase()}
-                </div>
+                </Link>
                 <button
                   onClick={handleLogout}
                   className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg transition-all hover:bg-gray-50 hover:border-gray-400 shadow-sm hover:shadow-md flex items-center gap-2"
