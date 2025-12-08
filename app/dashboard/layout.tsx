@@ -66,6 +66,7 @@ export default function DashboardLayout({
     { name: 'Projects', href: '/dashboard/projects', icon: '📁' },
     { name: 'Tasks', href: '/dashboard/tasks', icon: '✓' },
     { name: 'Teams', href: '/dashboard/teams', icon: '👥' },
+    { name: 'Profile', href: '/dashboard/profile', icon: '👤' },
   ]
 
   return (
