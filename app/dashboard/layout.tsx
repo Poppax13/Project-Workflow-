@@ -75,9 +75,12 @@ export default function DashboardLayout({
         <div className="px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Logo and Brand */}
-            <div className="flex items-center gap-4">
+            <Link
+              href="/dashboard"
+              className="flex items-center gap-4 group focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2b7fff] rounded-xl pr-2"
+            >
               <div 
-                className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg transition-transform hover:scale-105"
+                className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg transition-transform group-hover:scale-105"
                 style={{ 
                   backgroundColor: '#2b7fff',
                   background: 'linear-gradient(135deg, #2b7fff 0%, #1a5fcc 100%)'
@@ -87,11 +90,11 @@ export default function DashboardLayout({
               </div>
               <div>
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                  My App
+                  Project Flow
                 </h1>
                 <p className="text-xs text-gray-500 -mt-1">Project Management</p>
               </div>
-            </div>
+            </Link>
 
             {/* Right Side Actions */}
             <div className="flex items-center gap-4">
