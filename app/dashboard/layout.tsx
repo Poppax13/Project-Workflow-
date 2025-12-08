@@ -24,10 +24,10 @@ export default function DashboardLayout({
         router.push('/log-in')
       } else {
         setLoading(false)
-        if (session.user?.email) {
-          setUserEmail(session.user.email)
-          setUserName(session.user.email.split('@')[0] || 'User')
-        }
+        const email = session.user?.email
+        const fullName = (session.user?.user_metadata as { full_name?: string })?.full_name
+        if (email) setUserEmail(email)
+        setUserName(fullName || email?.split('@')[0] || 'User')
       }
     }
 
@@ -38,10 +38,10 @@ export default function DashboardLayout({
         router.push('/log-in')
       } else {
         setLoading(false)
-        if (session.user?.email) {
-          setUserEmail(session.user.email)
-          setUserName(session.user.email.split('@')[0] || 'User')
-        }
+        const email = session.user?.email
+        const fullName = (session.user?.user_metadata as { full_name?: string })?.full_name
+        if (email) setUserEmail(email)
+        setUserName(fullName || email?.split('@')[0] || 'User')
       }
     })
 
@@ -66,7 +66,6 @@ export default function DashboardLayout({
     { name: 'Projects', href: '/dashboard/projects', icon: '📁' },
     { name: 'Tasks', href: '/dashboard/tasks', icon: '✓' },
     { name: 'Teams', href: '/dashboard/teams', icon: '👥' },
-    { name: 'Profile', href: '/dashboard/profile', icon: '👤' },
   ]
 
   return (
